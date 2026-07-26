@@ -236,26 +236,7 @@
 
                             <div>
                                 <label class="block font-extrabold text-slate-700 mb-1">Date Péremption Lot</label>
-                                <div 
-                                    x-data 
-                                    x-init="flatpickr($refs.expPickerExisting, { 
-                                        locale: 'fr', 
-                                        dateFormat: 'Y-m-d', 
-                                        altInput: true, 
-                                        altFormat: 'd/m/Y', 
-                                        onChange: function(dates, dateStr) { $wire.set('fulfillExpirationDate', dateStr); } 
-                                    })"
-                                    class="relative"
-                                >
-                                    <input 
-                                        x-ref="expPickerExisting" 
-                                        type="text" 
-                                        wire:model="fulfillExpirationDate" 
-                                        placeholder="Choisir une date..." 
-                                        class="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-xl text-[#0f172a] font-mono font-bold text-xs focus:border-[#00c9a7] focus:outline-none cursor-pointer"
-                                    >
-                                    <i class="fa-solid fa-calendar-days absolute right-3 top-3 text-slate-400 pointer-events-none"></i>
-                                </div>
+                                <x-date-picker wire:model="fulfillExpirationDate" placeholder="Choisir une date..." />
                             </div>
 
                             <div>
@@ -404,26 +385,7 @@
 
                             <div>
                                 <label class="block font-extrabold text-slate-700 mb-1">Date Péremption Lot</label>
-                                <div 
-                                    x-data 
-                                    x-init="flatpickr($refs.expPickerNew, { 
-                                        locale: 'fr', 
-                                        dateFormat: 'Y-m-d', 
-                                        altInput: true, 
-                                        altFormat: 'd/m/Y', 
-                                        onChange: function(dates, dateStr) { $wire.set('fulfillExpirationDate', dateStr); } 
-                                    })"
-                                    class="relative"
-                                >
-                                    <input 
-                                        x-ref="expPickerNew" 
-                                        type="text" 
-                                        wire:model="fulfillExpirationDate" 
-                                        placeholder="Choisir une date..." 
-                                        class="w-full px-3 py-2 bg-white border border-slate-300 rounded-xl text-[#0f172a] font-mono font-bold text-xs focus:border-[#00c9a7] focus:outline-none cursor-pointer"
-                                    >
-                                    <i class="fa-solid fa-calendar-days absolute right-3 top-2.5 text-slate-400 pointer-events-none"></i>
-                                </div>
+                                <x-date-picker wire:model="fulfillExpirationDate" placeholder="Choisir une date..." />
                             </div>
 
                             <div>

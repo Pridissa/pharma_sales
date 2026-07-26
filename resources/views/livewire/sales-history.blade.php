@@ -15,27 +15,10 @@
                 >
             </div>
 
-            <div 
-                x-data 
-                x-init="flatpickr($refs.historyDatePicker, { 
-                    locale: 'fr', 
-                    dateFormat: 'Y-m-d', 
-                    altInput: true, 
-                    altFormat: 'd/m/Y', 
-                    onChange: function(selectedDates, dateStr) { $wire.set('dateFilter', dateStr); } 
-                })"
-                class="flex items-center gap-2"
-            >
+            <div class="flex items-center gap-2">
                 <label class="text-xs text-slate-700 font-extrabold">Date:</label>
-                <div class="relative">
-                    <input 
-                        x-ref="historyDatePicker" 
-                        type="text" 
-                        wire:model.live="dateFilter" 
-                        placeholder="Filtrer par date..."
-                        class="px-3 py-2 bg-white border border-slate-300 rounded-xl text-xs font-bold text-[#0f172a] focus:outline-none focus:border-[#00c9a7] font-mono cursor-pointer"
-                    >
-                    <i class="fa-solid fa-calendar-days absolute right-3 top-2.5 text-slate-400 pointer-events-none"></i>
+                <div class="w-48">
+                    <x-date-picker wire:model.live="dateFilter" placeholder="Filtrer par date..." />
                 </div>
                 @if($dateFilter)
                     <button wire:click="$set('dateFilter', '')" class="text-xs text-slate-700 hover:text-slate-900 px-2 py-1 bg-slate-100 rounded-lg font-bold border border-slate-300">
