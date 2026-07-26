@@ -23,6 +23,9 @@
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
 
+    <!-- Chart.js for Interactive Dashboard Charts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
         tailwind.config = {
             theme: {

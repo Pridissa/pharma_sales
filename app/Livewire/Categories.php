@@ -64,6 +64,7 @@ class Categories extends Component
     public function saveCategory(): void
     {
         $validated = $this->validate();
+        $validated['slug'] = \Illuminate\Support\Str::slug($this->name);
 
         if ($this->editingCategoryId) {
             $cat = Category::findOrFail($this->editingCategoryId);
