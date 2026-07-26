@@ -4,18 +4,18 @@
     <div class="flex-1 flex flex-col min-w-0">
 
         <!-- Cash Session Status Banner -->
-        <div class="mb-3 p-3 rounded-2xl glass-card border border-slate-800 flex items-center justify-between gap-3 text-xs">
+        <div class="mb-3 p-3.5 rounded-2xl bg-white border border-slate-200 shadow-sm flex items-center justify-between gap-3 text-xs">
             @if($activeSession)
                 <div class="flex items-center gap-2.5">
-                    <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
                     <div>
-                        <span class="font-bold text-white">Session Caisse Active #{{ $activeSession->id }}</span>
-                        <span class="text-slate-400 text-[11px] block">Ouverte à {{ $activeSession->opened_at->format('H:i') }} • Fond initial : <span class="font-mono text-emerald-400 font-bold">{{ number_format($activeSession->opening_balance, 0, ',', ' ') }} FC</span></span>
+                        <span class="font-bold text-slate-900">Session Caisse Active #{{ $activeSession->id }}</span>
+                        <span class="text-slate-500 text-[11px] block">Ouverte à {{ $activeSession->opened_at->format('H:i') }} • Fond initial : <span class="font-mono text-emerald-700 font-bold">{{ number_format($activeSession->opening_balance, 0, ',', ' ') }} FC</span></span>
                     </div>
                 </div>
                 <button 
                     wire:click="openCloseSessionModal" 
-                    class="px-3 py-1.5 rounded-xl bg-amber-500/20 hover:bg-amber-500 text-amber-300 hover:text-slate-950 font-bold border border-amber-500/30 transition-all flex items-center gap-1.5"
+                    class="px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-700 font-bold border border-amber-200 transition-all flex items-center gap-1.5"
                 >
                     <i class="fa-solid fa-lock"></i> Clôturer Caisse (Z)
                 </button>
@@ -23,13 +23,13 @@
                 <div class="flex items-center gap-2.5">
                     <span class="w-3 h-3 rounded-full bg-rose-500"></span>
                     <div>
-                        <span class="font-bold text-rose-400">Aucune Session Caisse Ouverte</span>
-                        <span class="text-slate-400 text-[11px] block">Veuillez ouvrir votre session avec le fond de caisse initial</span>
+                        <span class="font-bold text-rose-600">Aucune Session Caisse Ouverte</span>
+                        <span class="text-slate-500 text-[11px] block">Veuillez ouvrir votre session avec le fond de caisse initial</span>
                     </div>
                 </div>
                 <button 
                     wire:click="openSessionModal" 
-                    class="px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold shadow-md shadow-emerald-500/20 transition-all flex items-center gap-1.5"
+                    class="px-3.5 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-bold shadow-sm transition-all flex items-center gap-1.5"
                 >
                     <i class="fa-solid fa-key"></i> Ouvrir Session Caisse
                 </button>
@@ -40,14 +40,14 @@
         <div class="mb-4 space-y-3">
             <!-- Search input -->
             <div class="relative">
-                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-emerald-400">
+                <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-emerald-600">
                     <i class="fa-solid fa-magnifying-glass text-lg"></i>
                 </div>
                 <input 
                     wire:model.live.debounce.250ms="search" 
                     type="text" 
                     placeholder="Rechercher par nom (ex: Paracétamol), DCI ou Code-barres..."
-                    class="w-full pl-12 pr-10 py-3.5 bg-slate-900/90 border border-slate-700/80 rounded-2xl text-white placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 shadow-xl transition-all font-medium"
+                    class="w-full pl-12 pr-10 py-3.5 bg-white border border-slate-200 rounded-2xl text-slate-900 placeholder-slate-400 focus:outline-none focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500/20 shadow-sm transition-all font-medium"
                     autofocus
                 >
                 @if($search)

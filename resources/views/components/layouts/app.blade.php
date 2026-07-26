@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="fr" class="h-full bg-[#0b141a] text-[#e9edef]">
+<html lang="fr" class="h-full bg-[#f4f6f8] text-slate-800">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $title ?? 'PharmaSales - Gestion Pharmaceutique' }}</title>
+    <title>{{ $title ?? 'BITA PHARMA - Gestion Pharmaceutique' }}</title>
 
     <!-- App Favicon & Icons -->
     <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -20,7 +20,6 @@
 
     <!-- Flatpickr Datepicker CSS & JS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/fr.js"></script>
 
@@ -34,32 +33,27 @@
                         mono: ['JetBrains Mono', 'monospace'],
                     },
                     colors: {
-                        wa: {
-                            dark: '#0b141a',
-                            panel: '#111b21',
-                            card: '#202c33',
-                            border: '#2a3942',
-                            primary: '#00a884',
-                            accent: '#25d366',
-                            teal: '#128c7e',
-                            cyan: '#34b7f1',
-                            text: '#e9edef',
-                            subtext: '#8696a0',
-                        },
                         emerald: {
-                            400: '#25d366',
-                            500: '#00a884',
-                            600: '#075e54',
-                            700: '#128c7e',
-                            900: '#0b141a',
-                            950: '#050a0e',
+                            50: '#ecfdf5',
+                            100: '#d1fae5',
+                            200: '#a7f3d0',
+                            400: '#34d399',
+                            500: '#10b981',
+                            600: '#059669',
+                            700: '#047857',
+                            800: '#065f46',
+                            900: '#064e3b',
                         },
-                        pharma: {
-                            dark: '#0b141a',
-                            sidebar: '#111b21',
-                            card: '#202c33',
-                            accent: '#00a884',
-                            cyan: '#34b7f1',
+                        bita: {
+                            bg: '#f4f6f8',
+                            card: '#ffffff',
+                            subtle: '#f8fafc',
+                            border: '#e2e8f0',
+                            primary: '#059669',
+                            accent: '#10b981',
+                            dark: '#0f172a',
+                            text: '#1e293b',
+                            muted: '#64748b',
                         }
                     }
                 }
@@ -72,8 +66,8 @@
             font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            background-color: #0b141a;
-            color: #e9edef;
+            background-color: #f4f6f8;
+            color: #1e293b;
         }
         h1, h2, h3, h4, h5, h6 { 
             font-family: 'Outfit', sans-serif;
@@ -84,19 +78,24 @@
             font-variant-numeric: tabular-nums;
         }
         .glass-panel {
-            background: rgba(32, 44, 51, 0.95);
-            backdrop-filter: blur(16px);
-            border: 1px solid rgba(42, 57, 66, 0.8);
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05), 0 1px 2px -1px rgba(0, 0, 0, 0.05);
         }
         .glass-card {
-            background: rgba(27, 38, 45, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(42, 57, 66, 0.6);
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
         }
         .scrollbar-thin::-webkit-scrollbar { width: 6px; height: 6px; }
-        .scrollbar-thin::-webkit-scrollbar-track { background: rgba(11, 20, 26, 0.6); }
-        .scrollbar-thin::-webkit-scrollbar-thumb { background: rgba(0, 168, 132, 0.4); border-radius: 3px; }
-        .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: rgba(0, 168, 132, 0.8); }
+        .scrollbar-thin::-webkit-scrollbar-track { background: #f1f5f9; }
+        .scrollbar-thin::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        .scrollbar-thin::-webkit-scrollbar-thumb:hover { background: #10b981; }
+
+        /* Dark overlay for modals */
+        .modal-backdrop {
+            background-color: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(4px);
+        }
 
         @media print {
             body { background: #fff !important; color: #000 !important; }
@@ -125,31 +124,31 @@
     </style>
     @livewireStyles
 </head>
-<body class="h-full bg-[#0b141a] text-[#e9edef] flex overflow-hidden" x-data="{ collapsed: localStorage.getItem('sidebar_collapsed') === 'true' }">
+<body class="h-full bg-[#f4f6f8] text-slate-800 flex overflow-hidden" x-data="{ collapsed: localStorage.getItem('sidebar_collapsed') === 'true' }">
 
     <!-- Sidebar Navbar -->
     <aside 
         :class="collapsed ? 'w-20' : 'w-64'" 
-        class="bg-[#111b21] border-r border-[#2a3942] flex flex-col justify-between p-3.5 z-20 select-none transition-all duration-300 ease-in-out shrink-0"
+        class="bg-white border-r border-slate-200/90 flex flex-col justify-between p-3.5 z-20 select-none transition-all duration-300 ease-in-out shrink-0 shadow-sm"
     >
         <div>
             <!-- Brand Logo & Collapse Toggle Button -->
-            <div class="flex items-center justify-between px-1 py-3 mb-5 border-b border-[#2a3942] gap-2">
+            <div class="flex items-center justify-between px-1 py-3 mb-5 border-b border-slate-100 gap-2">
                 <div class="flex items-center gap-3 overflow-hidden">
-                    <img src="/logo.svg" class="w-10 h-10 rounded-xl shadow-lg shadow-[#00a884]/30 border border-[#00a884]/40 shrink-0 object-cover" alt="PharmaSales Logo">
+                    <img src="/logo.svg" class="w-10 h-10 rounded-xl shadow-md shadow-emerald-500/20 border border-emerald-500/30 shrink-0 object-cover" alt="BITA PHARMA Logo">
                     <div x-show="!collapsed" x-transition.opacity class="overflow-hidden whitespace-nowrap">
-                        <h1 class="font-heading font-extrabold text-lg text-white tracking-wide leading-none">PHARMA <span class="text-[#00a884]">SALES</span></h1>
-                        <span class="text-[9px] text-[#00a884]/90 tracking-tight font-medium block mt-0.5 italic">La confiance au cœur de vos soins</span>
+                        <h1 class="font-heading font-extrabold text-lg text-slate-900 tracking-wide leading-none">BITA <span class="text-emerald-600">PHARMA</span></h1>
+                        <span class="text-[9px] text-slate-500 tracking-tight font-medium block mt-0.5 italic">La confiance au cœur de vos soins</span>
                     </div>
                 </div>
 
                 <!-- Fold / Unfold Toggle Button -->
                 <button 
                     @click="collapsed = !collapsed; localStorage.setItem('sidebar_collapsed', collapsed)" 
-                    class="w-8 h-8 rounded-xl bg-[#202c33] hover:bg-[#2a3942] border border-[#2a3942] text-[#8696a0] hover:text-[#00a884] flex items-center justify-center transition-colors shrink-0"
+                    class="w-8 h-8 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-500 hover:text-emerald-600 flex items-center justify-center transition-colors shrink-0"
                     :title="collapsed ? 'Déplier le menu' : 'Plier le menu'"
                 >
-                    <i class="fa-solid" :class="collapsed ? 'fa-indent text-[#00a884] text-base' : 'fa-outdent'"></i>
+                    <i class="fa-solid" :class="collapsed ? 'fa-indent text-emerald-600 text-base' : 'fa-outdent'"></i>
                 </button>
             </div>
 
@@ -159,9 +158,9 @@
                 <a 
                     href="{{ route('pos') }}" 
                     :title="collapsed ? 'Espace Caisse / POS' : ''"
-                    class="flex items-center gap-3 px-3.5 py-3 rounded-xl transition-all duration-200 text-sm font-medium {{ request()->routeIs('pos') ? 'bg-[#00a884]/20 text-[#00a884] border border-[#00a884]/40 shadow-md shadow-[#00a884]/10 font-bold' : 'text-[#8696a0] hover:text-[#e9edef] hover:bg-[#202c33]' }}"
+                    class="flex items-center gap-3 px-3.5 py-3 rounded-xl transition-all duration-200 text-sm font-medium {{ request()->routeIs('pos') ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80' }}"
                 >
-                    <i class="fa-solid fa-cash-register text-lg w-6 text-center shrink-0"></i>
+                    <i class="fa-solid fa-cash-register text-lg w-6 text-center shrink-0 text-emerald-600"></i>
                     <span x-show="!collapsed" x-transition.opacity class="whitespace-nowrap">Espace Caisse / POS</span>
                 </a>
 
@@ -169,78 +168,78 @@
                 <a 
                     href="{{ route('sales-history') }}" 
                     :title="collapsed ? 'Transactions & Historique Ventes' : ''"
-                    class="flex items-center gap-3 px-3.5 py-3 rounded-xl transition-all duration-200 text-sm font-medium {{ request()->routeIs('sales-history') ? 'bg-[#00a884]/20 text-[#00a884] border border-[#00a884]/40 shadow-md shadow-[#00a884]/10 font-bold' : 'text-[#8696a0] hover:text-[#e9edef] hover:bg-[#202c33]' }}"
+                    class="flex items-center gap-3 px-3.5 py-3 rounded-xl transition-all duration-200 text-sm font-medium {{ request()->routeIs('sales-history') ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80' }}"
                 >
-                    <i class="fa-solid fa-arrow-right-arrow-left text-lg w-6 text-center shrink-0 text-[#34b7f1]"></i>
+                    <i class="fa-solid fa-arrow-right-arrow-left text-lg w-6 text-center shrink-0 text-cyan-600"></i>
                     <span x-show="!collapsed" x-transition.opacity class="whitespace-nowrap">Transactions & Ventes</span>
                 </a>
 
                 <a 
                     href="{{ route('requisitions') }}" 
                     :title="collapsed ? 'Réquisitions & Demandes' : ''"
-                    class="flex items-center gap-3 px-3.5 py-3 rounded-xl transition-all duration-200 text-sm font-medium {{ request()->routeIs('requisitions') ? 'bg-[#00a884]/20 text-[#00a884] border border-[#00a884]/40 shadow-md shadow-[#00a884]/10 font-bold' : 'text-[#8696a0] hover:text-[#e9edef] hover:bg-[#202c33]' }}"
+                    class="flex items-center gap-3 px-3.5 py-3 rounded-xl transition-all duration-200 text-sm font-medium {{ request()->routeIs('requisitions') ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80' }}"
                 >
-                    <i class="fa-solid fa-cart-flatbed text-lg w-6 text-center shrink-0"></i>
+                    <i class="fa-solid fa-cart-flatbed text-lg w-6 text-center shrink-0 text-rose-500"></i>
                     <span x-show="!collapsed" x-transition.opacity class="whitespace-nowrap">Réquisitions & Demandes</span>
                 </a>
 
                 <a 
                     href="{{ route('cash-register') }}" 
                     :title="collapsed ? 'Sessions Caisse & Audit' : ''"
-                    class="flex items-center gap-3 px-3.5 py-3 rounded-xl transition-all duration-200 text-sm font-medium {{ request()->routeIs('cash-register') ? 'bg-[#00a884]/20 text-[#00a884] border border-[#00a884]/40 shadow-md shadow-[#00a884]/10 font-bold' : 'text-[#8696a0] hover:text-[#e9edef] hover:bg-[#202c33]' }}"
+                    class="flex items-center gap-3 px-3.5 py-3 rounded-xl transition-all duration-200 text-sm font-medium {{ request()->routeIs('cash-register') ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80' }}"
                 >
-                    <i class="fa-solid fa-vault text-lg w-6 text-center shrink-0 text-amber-400"></i>
+                    <i class="fa-solid fa-vault text-lg w-6 text-center shrink-0 text-amber-500"></i>
                     <span x-show="!collapsed" x-transition.opacity class="whitespace-nowrap">Sessions Caisse & Audit</span>
                 </a>
 
                 <!-- Links restricted to Admin only -->
                 @if(auth()->check() && auth()->user()->isAdmin())
                     <div x-show="!collapsed" x-transition.opacity class="pt-3 pb-1 px-3">
-                        <span class="text-[9px] font-extrabold text-[#8696a0] uppercase tracking-widest">Administration</span>
+                        <span class="text-[9px] font-extrabold text-slate-400 uppercase tracking-widest">Administration</span>
                     </div>
 
                     <a 
                         href="{{ route('dashboard') }}" 
                         :title="collapsed ? 'Tableau de Bord' : ''"
-                        class="flex items-center gap-3 px-3.5 py-3 rounded-xl transition-all duration-200 text-sm font-medium {{ request()->routeIs('dashboard') ? 'bg-[#00a884]/20 text-[#00a884] border border-[#00a884]/40 shadow-md shadow-[#00a884]/10 font-bold' : 'text-[#8696a0] hover:text-[#e9edef] hover:bg-[#202c33]' }}"
+                        class="flex items-center gap-3 px-3.5 py-3 rounded-xl transition-all duration-200 text-sm font-medium {{ request()->routeIs('dashboard') ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80' }}"
                     >
-                        <i class="fa-solid fa-chart-pie text-lg w-6 text-center shrink-0"></i>
+                        <i class="fa-solid fa-chart-pie text-lg w-6 text-center shrink-0 text-emerald-600"></i>
                         <span x-show="!collapsed" x-transition.opacity class="whitespace-nowrap">Tableau de Bord</span>
                     </a>
 
                     <a 
                         href="{{ route('reports') }}" 
                         :title="collapsed ? 'Rapports & Analytics' : ''"
-                        class="flex items-center gap-3 px-3.5 py-3 rounded-xl transition-all duration-200 text-sm font-medium {{ request()->routeIs('reports') ? 'bg-[#00a884]/20 text-[#00a884] border border-[#00a884]/40 shadow-md shadow-[#00a884]/10 font-bold' : 'text-[#8696a0] hover:text-[#e9edef] hover:bg-[#202c33]' }}"
+                        class="flex items-center gap-3 px-3.5 py-3 rounded-xl transition-all duration-200 text-sm font-medium {{ request()->routeIs('reports') ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80' }}"
                     >
-                        <i class="fa-solid fa-chart-line text-lg w-6 text-center shrink-0 text-[#00a884]"></i>
+                        <i class="fa-solid fa-chart-line text-lg w-6 text-center shrink-0 text-teal-600"></i>
                         <span x-show="!collapsed" x-transition.opacity class="whitespace-nowrap">Rapports & Analytics</span>
                     </a>
 
                     <a 
                         href="{{ route('products') }}" 
                         :title="collapsed ? 'Stock & Produits' : ''"
-                        class="flex items-center gap-3 px-3.5 py-3 rounded-xl transition-all duration-200 text-sm font-medium {{ request()->routeIs('products') ? 'bg-[#00a884]/20 text-[#00a884] border border-[#00a884]/40 shadow-md shadow-[#00a884]/10 font-bold' : 'text-[#8696a0] hover:text-[#e9edef] hover:bg-[#202c33]' }}"
+                        class="flex items-center gap-3 px-3.5 py-3 rounded-xl transition-all duration-200 text-sm font-medium {{ request()->routeIs('products') ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80' }}"
                     >
-                        <i class="fa-solid fa-pills text-lg w-6 text-center shrink-0"></i>
+                        <i class="fa-solid fa-pills text-lg w-6 text-center shrink-0 text-emerald-600"></i>
                         <span x-show="!collapsed" x-transition.opacity class="whitespace-nowrap">Stock & Produits</span>
                     </a>
 
                     <a 
                         href="{{ route('categories') }}" 
                         :title="collapsed ? 'Catégories Produits' : ''"
-                        class="flex items-center gap-3 px-3.5 py-3 rounded-xl transition-all duration-200 text-sm font-medium {{ request()->routeIs('categories') ? 'bg-[#00a884]/20 text-[#00a884] border border-[#00a884]/40 shadow-md shadow-[#00a884]/10 font-bold' : 'text-[#8696a0] hover:text-[#e9edef] hover:bg-[#202c33]' }}"
+                        class="flex items-center gap-3 px-3.5 py-3 rounded-xl transition-all duration-200 text-sm font-medium {{ request()->routeIs('categories') ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80' }}"
                     >
-                        <i class="fa-solid fa-tags text-lg w-6 text-center shrink-0"></i>
+                        <i class="fa-solid fa-tags text-lg w-6 text-center shrink-0 text-slate-500"></i>
                         <span x-show="!collapsed" x-transition.opacity class="whitespace-nowrap">Catégories Produits</span>
                     </a>
 
                     <a 
                         href="{{ route('users') }}" 
                         :title="collapsed ? 'Gestion Utilisateurs' : ''"
-                        class="flex items-center gap-3 px-3.5 py-3 rounded-xl transition-all duration-200 text-sm font-medium {{ request()->routeIs('users') ? 'bg-[#00a884]/20 text-[#00a884] border border-[#00a884]/40 shadow-md shadow-[#00a884]/10 font-bold' : 'text-[#8696a0] hover:text-[#e9edef] hover:bg-[#202c33]' }}"
+                        class="flex items-center gap-3 px-3.5 py-3 rounded-xl transition-all duration-200 text-sm font-medium {{ request()->routeIs('users') ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 font-bold shadow-sm' : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100/80' }}"
                     >
-                        <i class="fa-solid fa-users-gear text-lg w-6 text-center shrink-0"></i>
+                        <i class="fa-solid fa-users-gear text-lg w-6 text-center shrink-0 text-slate-500"></i>
                         <span x-show="!collapsed" x-transition.opacity class="whitespace-nowrap">Gestion Utilisateurs</span>
                     </a>
                 @endif
@@ -248,28 +247,28 @@
         </div>
 
         <!-- System info / Logged User profile & Logout -->
-        <div class="glass-card p-2.5 rounded-2xl border border-[#2a3942] space-y-2">
+        <div class="glass-card p-2.5 rounded-2xl border border-slate-200 space-y-2">
             @if(auth()->check())
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2.5 overflow-hidden">
-                        <div class="w-8 h-8 rounded-xl bg-[#00a884]/20 text-[#00a884] flex items-center justify-center font-bold text-xs border border-[#00a884]/30 shrink-0" :title="collapsed ? '{{ auth()->user()->name }}' : ''">
+                        <div class="w-8 h-8 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs border border-emerald-200 shrink-0" :title="collapsed ? '{{ auth()->user()->name }}' : ''">
                             <i class="fa-solid {{ auth()->user()->isAdmin() ? 'fa-user-shield' : 'fa-user' }}"></i>
                         </div>
                         <div x-show="!collapsed" x-transition.opacity class="overflow-hidden whitespace-nowrap">
-                            <p class="text-xs font-bold text-[#e9edef] truncate">{{ auth()->user()->name }}</p>
-                            <p class="text-[9px] uppercase tracking-wider font-bold {{ auth()->user()->isAdmin() ? 'text-[#00a884]' : 'text-[#34b7f1]' }}">
+                            <p class="text-xs font-bold text-slate-800 truncate">{{ auth()->user()->name }}</p>
+                            <p class="text-[9px] uppercase tracking-wider font-bold {{ auth()->user()->isAdmin() ? 'text-emerald-600' : 'text-cyan-600' }}">
                                 {{ auth()->user()->isAdmin() ? '🛡️ Admin' : '👤 Caissier' }}
                             </p>
                         </div>
                     </div>
                 </div>
 
-                <form method="POST" action="{{ route('logout') }}" class="pt-1 border-t border-[#2a3942]">
+                <form method="POST" action="{{ route('logout') }}" class="pt-1 border-t border-slate-200">
                     @csrf
                     <button 
                         type="submit" 
                         :title="collapsed ? 'Déconnexion' : ''"
-                        class="w-full py-1.5 px-3 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 hover:text-rose-300 font-bold text-[11px] transition-colors flex items-center justify-center gap-1.5"
+                        class="w-full py-1.5 px-3 rounded-xl bg-rose-50 hover:bg-rose-100 text-rose-600 font-bold text-[11px] transition-colors flex items-center justify-center gap-1.5"
                     >
                         <i class="fa-solid fa-right-from-bracket shrink-0"></i>
                         <span x-show="!collapsed" x-transition.opacity class="whitespace-nowrap">Déconnexion</span>
@@ -280,7 +279,7 @@
     </aside>
 
     <!-- Main Content Wrapper -->
-    <div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#0b141a]">
+    <div class="flex-1 flex flex-col min-w-0 overflow-hidden bg-[#f4f6f8]">
         <!-- Top Floating Toast Popup Notifications Container -->
         <div 
             x-data="{ 
@@ -319,17 +318,17 @@
                     x-transition:leave-start="translate-y-0 opacity-100 scale-100"
                     x-transition:leave-end="-translate-y-8 opacity-0 scale-95"
                     :class="toast.type === 'error' 
-                        ? 'bg-rose-950/95 border-rose-500/60 text-rose-100 shadow-rose-900/40' 
-                        : (toast.type === 'warning' ? 'bg-amber-950/95 border-amber-500/60 text-amber-100 shadow-amber-900/40' : 'bg-[#111b21] border-[#00a884]/60 text-[#25d366] shadow-[#00a884]/20')"
+                        ? 'bg-rose-900 text-white border-rose-700 shadow-rose-900/30' 
+                        : (toast.type === 'warning' ? 'bg-amber-900 text-white border-amber-700 shadow-amber-900/30' : 'bg-slate-900 text-white border-emerald-500 shadow-slate-900/30')"
                     class="pointer-events-auto px-4 py-3 rounded-2xl border shadow-2xl backdrop-blur-xl flex items-center justify-between gap-3 text-xs font-semibold w-full"
                 >
                     <div class="flex items-center gap-3">
-                        <div :class="toast.type === 'error' ? 'bg-rose-500/20 text-rose-400 border border-rose-500/30' : (toast.type === 'warning' ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30' : 'bg-[#00a884]/20 text-[#00a884] border border-[#00a884]/30')" class="w-8 h-8 rounded-xl flex items-center justify-center shrink-0">
+                        <div :class="toast.type === 'error' ? 'bg-rose-500/20 text-rose-300' : (toast.type === 'warning' ? 'bg-amber-500/20 text-amber-300' : 'bg-emerald-500/20 text-emerald-400')" class="w-8 h-8 rounded-xl flex items-center justify-center shrink-0">
                             <i :class="toast.type === 'error' ? 'fa-solid fa-circle-exclamation text-sm' : (toast.type === 'warning' ? 'fa-solid fa-triangle-exclamation text-sm' : 'fa-solid fa-circle-check text-sm')"></i>
                         </div>
                         <span x-text="toast.message" class="leading-snug"></span>
                     </div>
-                    <button @click="removeToast(toast.id)" class="text-[#8696a0] hover:text-white shrink-0 p-1">
+                    <button @click="removeToast(toast.id)" class="text-slate-400 hover:text-white shrink-0 p-1">
                         <i class="fa-solid fa-xmark text-sm"></i>
                     </button>
                 </div>
@@ -337,10 +336,10 @@
         </div>
 
         <!-- Top Header Bar -->
-        <header class="h-16 border-b border-[#2a3942] px-6 flex items-center justify-between glass-panel select-none">
+        <header class="h-16 border-b border-slate-200/90 px-6 flex items-center justify-between bg-white shadow-sm select-none">
             <div class="flex items-center gap-4">
-                <img src="/logo.svg" class="w-8 h-8 rounded-lg shadow-md shrink-0 md:hidden" alt="Logo">
-                <h2 class="text-lg font-bold text-white tracking-wide flex items-center gap-2">
+                <img src="/logo.svg" class="w-8 h-8 rounded-lg shadow-sm shrink-0 md:hidden" alt="BITA PHARMA Logo">
+                <h2 class="text-lg font-bold text-slate-900 tracking-wide flex items-center gap-2">
                     {{ $header ?? 'Gestion des Ventes Pharmaceutiques' }}
                 </h2>
             </div>
@@ -348,7 +347,7 @@
                 <!-- Header Quick Client Requisition Action Button -->
                 <button 
                     @click="$dispatch('open-global-req-modal')"
-                    class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-[#00a884] to-[#128c7e] hover:from-[#25d366] hover:to-[#00a884] text-slate-950 font-bold text-xs shadow-md shadow-[#00a884]/20 flex items-center gap-1.5 transition-all"
+                    class="px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold text-xs shadow-sm flex items-center gap-1.5 transition-all"
                     title="Enregistrer une réquisition pour un produit demandé par un client"
                 >
                     <i class="fa-solid fa-cart-flatbed"></i>
@@ -357,12 +356,12 @@
 
                 <!-- Clock -->
                 <div class="text-right hidden sm:block">
-                    <div id="live-clock" class="text-sm font-semibold text-[#00a884] font-mono">--:--:--</div>
-                    <div class="text-[11px] text-[#8696a0]">{{ now()->translatedFormat('l d F Y') }}</div>
+                    <div id="live-clock" class="text-sm font-bold text-emerald-600 font-mono">--:--:--</div>
+                    <div class="text-[11px] text-slate-500">{{ now()->translatedFormat('l d F Y') }}</div>
                 </div>
-                <div class="h-6 w-px bg-[#2a3942] hidden sm:block"></div>
+                <div class="h-6 w-px bg-slate-200 hidden sm:block"></div>
                 <div class="flex items-center gap-2">
-                    <span class="w-8 h-8 rounded-xl bg-[#00a884]/10 text-[#00a884] border border-[#00a884]/20 font-medium flex items-center justify-center shrink-0" title="Base de données connectée">
+                    <span class="w-8 h-8 rounded-xl bg-emerald-50 text-emerald-600 border border-emerald-200 font-medium flex items-center justify-center shrink-0" title="Base de données connectée">
                         <i class="fa-solid fa-database text-xs"></i>
                     </span>
                 </div>
