@@ -150,13 +150,40 @@ class Requisitions extends Component
             if (!$product) return;
 
             $addQty = max(1, (int)$this->fulfillAddQuantity);
-            $newStock = $product->stock_quantity + $addQty;
+            $prevStock = $product->stock_quantity;
+            $newStock = $prevStock + $addQty;
 
-            $product->stock_quantity = newStock;
+            $batchNumber = $this->fulfillBatchNumber ?: ('LOT-' . date('Ym') . '-' . rand(100, 999));
+            $expDate = $this->fulfillExpirationDate ?: \Carbon\Carbon::now()->addYear()->format('Y-m-d');
+
+            // Créer un lot pour cette livraison
+            $batch = \App\Models\ProductBatch::create([
+                'product_id' => $product->id,
+                'batch_number' => $batchNumber,
+                'expiration_date' => $expDate,
+                'quantity' => $addQty,
+                'purchase_price' => $this->fulfillPurchasePrice > 0 ? $this->fulfillPurchasePrice : $product->purchase_price,
+                'supplier_name' => 'Approvisionnement Réquisition',
+                'is_active' => true,
+            ]);
+
             if ($this->fulfillPurchasePrice > 0) $product->purchase_price = $this->fulfillPurchasePrice;
             if ($this->fulfillPrice > 0) $product->price = $this->fulfillPrice;
             if ($this->fulfillExpirationDate) $product->expiration_date = $this->fulfillExpirationDate;
+
+            $product->syncStockFromBatches();
             $product->save();
+
+            \App\Models\StockMovement::create([
+                'product_id' => $product->id,
+                'product_batch_id' => $batch->id,
+                'user_id' => auth()->id(),
+                'type' => 'entree',
+                'quantity' => $addQty,
+                'previous_quantity' => $prevStock,
+                'new_quantity' => $product->stock_quantity,
+                'reason' => "Livraison Réquisition #{$this->fulfillingRequisitionId}",
+            ]);
 
             if ($this->fulfillingRequisitionId) {
                 $req = Requisition::find($this->fulfillingRequisitionId);
@@ -165,7 +192,7 @@ class Requisitions extends Component
 
             Requisition::syncAlertRequisitions();
 
-            $this->dispatch('toast', message: "Approvisionnement validé ! Stock de \"{$product->name}\" augmenté de +{$addQty} (Nouveau stock: {$newStock}).", type: 'success');
+            $this->dispatch('toast', message: "Approvisionnement validé ! Stock de \"{$product->name}\" augmenté de +{$addQty} (Nouveau stock: {$product->stock_quantity}).", type: 'success');
         } else {
             // Création d'un nouveau produit
             if (empty(trim($this->fulfillProductName))) {
@@ -193,10 +220,37 @@ class Requisitions extends Component
                 'dosage_unit' => $this->fulfillDosageUnit ?: null,
                 'price' => (float)$this->fulfillPrice,
                 'purchase_price' => (float)$this->fulfillPurchasePrice,
-                'stock_quantity' => $addQty,
+                'stock_quantity' => 0,
                 'min_stock_alert' => max(1, (int)$this->fulfillMinStockAlert),
                 'expiration_date' => $this->fulfillExpirationDate ?: null,
                 'requires_prescription' => (bool)$this->fulfillRequiresPrescription,
+            ]);
+
+            $batchNumber = $this->fulfillBatchNumber ?: ('LOT-' . date('Ym') . '-' . rand(100, 999));
+            $expDate = $this->fulfillExpirationDate ?: \Carbon\Carbon::now()->addYear()->format('Y-m-d');
+
+            $batch = \App\Models\ProductBatch::create([
+                'product_id' => $product->id,
+                'batch_number' => $batchNumber,
+                'expiration_date' => $expDate,
+                'quantity' => $addQty,
+                'purchase_price' => (float)$this->fulfillPurchasePrice,
+                'supplier_name' => 'Approvisionnement Réquisition Initial',
+                'is_active' => true,
+            ]);
+
+            $product->syncStockFromBatches();
+            $product->save();
+
+            \App\Models\StockMovement::create([
+                'product_id' => $product->id,
+                'product_batch_id' => $batch->id,
+                'user_id' => auth()->id(),
+                'type' => 'entree',
+                'quantity' => $addQty,
+                'previous_quantity' => 0,
+                'new_quantity' => $product->stock_quantity,
+                'reason' => 'Création initiale via Réquisition',
             ]);
 
             if ($this->fulfillingRequisitionId) {
