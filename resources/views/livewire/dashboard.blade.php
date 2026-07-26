@@ -1,20 +1,20 @@
 <div class="space-y-6">
 
-    <!-- Dashboard Welcome Header with BITA PHARMA Logo -->
-    <div class="glass-panel p-5 rounded-3xl border border-slate-200 flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-sm">
+    <!-- Dashboard Welcome Header with BITA PHARMA Logo (APPLOCK Style) -->
+    <div class="bg-gradient-to-r from-[#182232] via-[#1d2b3f] to-[#152030] p-6 rounded-3xl border border-[#28384f] flex flex-col sm:flex-row sm:items-center justify-between gap-4 shadow-xl text-white">
         <div class="flex items-center gap-4">
-            <img src="/logo.svg" class="w-14 h-14 rounded-2xl shadow-md shadow-emerald-500/20 border border-emerald-500/30 object-cover shrink-0" alt="BITA PHARMA Logo">
+            <img src="/logo.svg" class="w-14 h-14 rounded-2xl shadow-xl shadow-[#00c9a7]/30 border border-[#00c9a7]/40 object-cover shrink-0" alt="BITA PHARMA Logo">
             <div>
-                <h2 class="font-heading font-extrabold text-xl text-slate-900 tracking-wide flex items-center gap-2">
-                    BITA <span class="text-emerald-600">PHARMA</span>
-                    <span class="px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 text-xs font-mono font-bold border border-emerald-200">v2.0 Pro</span>
+                <h2 class="font-heading font-extrabold text-2xl text-white tracking-wide flex items-center gap-2">
+                    BITA <span class="text-[#00c9a7]">PHARMA</span>
+                    <span class="px-2.5 py-0.5 rounded-full bg-[#00c9a7]/20 text-[#00c9a7] text-xs font-mono font-bold border border-[#00c9a7]/30">v2.0 Pro</span>
                 </h2>
-                <p class="text-xs text-slate-500 mt-0.5">La confiance au cœur de vos soins — Tableau de bord de gestion & supervision</p>
+                <p class="text-xs text-slate-300 mt-1">La confiance au cœur de vos soins — Supervision des ventes & des stocks</p>
             </div>
         </div>
         <div class="flex items-center gap-3">
-            <a href="{{ route('pos') }}" class="px-4 py-2.5 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-extrabold text-xs rounded-2xl shadow-sm flex items-center gap-2 transition-all">
-                <i class="fa-solid fa-cash-register"></i> Aller à la Caisse (POS)
+            <a href="{{ route('pos') }}" class="px-5 py-3 bg-[#00c9a7] hover:bg-[#00b899] text-white font-extrabold text-xs rounded-2xl shadow-lg shadow-[#00c9a7]/30 flex items-center gap-2 transition-all">
+                <i class="fa-solid fa-cash-register"></i> Espace Caisse (POS)
             </a>
         </div>
     </div>
